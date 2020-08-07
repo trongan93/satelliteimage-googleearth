@@ -13,7 +13,6 @@ def main(execute_option, sync_glc):
         landslideRecords = record.read_short_landslide_record(fconfig.short_glc_file)
         for landslideRecord in landslideRecords:
             landslideimages = img_query.querySatelliteImages(landslideRecord.lat, landslideRecord.lng, landslideRecord.event_date)
-
             break #tmp - remove after test on 1 image
 
 
