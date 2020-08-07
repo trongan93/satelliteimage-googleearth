@@ -68,9 +68,22 @@ def save_short_landslide_record(landslideRecords,path):
     df.to_csv(path, index=False, header=True)
     print('done to save a short glc file')
 
+def read_short_landslide_record(path):
+    landslides_data = pd.read_csv(path)
+    landslides = []
+    for index, recordItem in landslides_data.iterrows():
+        landslideRecord = LandslideRecord(object_id=recordItem['object_id'], event_id=recordItem['event_id'],
+                                          landslide_category=recordItem['landslide_category'],
+                                          lat=recordItem['lat'], lng=recordItem['lng'],
+                                          event_date=recordItem['event_date'], size=recordItem['size'],
+                                          country=recordItem['country'])
+        landslides.append(landslideRecord)
+    return landslides
+
 if __name__ == "__main__":
-    base_path = Path().absolute().parent
-    input_path_from_glcdata = Path(base_path,'raw','nasa_global_landslide_catalog_point.csv')
-    short_glc_data = Path(base_path,'raw','short_glc.csv')
-    landslideRecords = readRecordData(input_path_from_glcdata)
-    save_short_landslide_record(landslideRecords,short_glc_data)
+    print("Test landslide record")
+    # base_path = Path().absolute().parent
+    # input_path_from_glcdata = Path(base_path,'raw','nasa_global_landslide_catalog_point.csv')
+    # short_glc_data = Path(base_path,'raw','short_glc.csv')
+    # landslideRecords = readRecordData(input_path_from_glcdata)
+    # save_short_landslide_record(landslideRecords,short_glc_data)
