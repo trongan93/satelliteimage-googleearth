@@ -1,0 +1,6 @@
+LANDSAT = ["LANDSAT/LC08/C01/T1_RT","LANDSAT/LE07/C01/T1_RT"]
+SENTINEL = ["COPERNICUS/S2"]
+JAXA = ["JAXA/ALOS/AVNIR-2/ORI"]
+
+SatelliteCollection = LANDSAT + SENTINEL + JAXA
+# print(SatelliteCollection)
