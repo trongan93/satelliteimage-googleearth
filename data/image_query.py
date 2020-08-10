@@ -47,11 +47,11 @@ class SatelliteQueryImage:
 
     def getBestSatelliteRGBImage(self, rgbSatelliteImages):
         landsat_8_rgb_images = rgbSatelliteImages['landsat_8_rgb_images']
-        landsat_8_best_rgb = landsat_8_rgb_images.first()
+        landsat_8_best_rgb = ee.Image(landsat_8_rgb_images.first())
         landsat_7_rgb_images = rgbSatelliteImages['landsat_7_rgb_images']
-        landsat_7_best_rgb = landsat_7_rgb_images.first()
+        landsat_7_best_rgb = ee.Image(landsat_7_rgb_images.first())
         sentinel_2_rgb_images = rgbSatelliteImages['sentinel_2_rgb_images']
-        sentinel_2_best_rgb = sentinel_2_rgb_images.first()
+        sentinel_2_best_rgb = ee.Image(sentinel_2_rgb_images.first())
         alos_2_rgb_images = rgbSatelliteImages['alos_2_rgb_images']
-        alos_2_best_rgb = alos_2_rgb_images.first()
-        return {'landsat_8_best_rgb':landsat_8_best_rgb, 'landsat_7_best_rgb':landsat_7_best_rgb, 'sentinel_2_best_rgb':sentinel_2_best_rgb, 'alos_2_best_rgb':alos_2_best_rgb}
+        alos_2_best_rgb = ee.Image(alos_2_rgb_images.first())
+        return {'ee': ee, 'landsat_8_best_rgb':landsat_8_best_rgb, 'landsat_7_best_rgb':landsat_7_best_rgb, 'sentinel_2_best_rgb':sentinel_2_best_rgb, 'alos_2_best_rgb':alos_2_best_rgb}
