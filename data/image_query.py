@@ -18,8 +18,6 @@ class SatelliteQueryImage:
         return ee.ImageCollection(sl_config.ALOS_2).filterBounds(ee.Geometry.Point(landslide_lng,landslide_lat)).filterDate(landslide_event_date,landslide_event_collection).sort('CLOUDY_PIXEL_PERCENTAGE')
 
     def getSatellitesImagesContainLandslide(self, landslide_lat, landslide_lng, landslide_event_date, landslide_event_collection):
-        print(landslide_event_date)
-        print(sl_config.LANDSAT_8_TIME_RANGE[0])
         error_landsat_8 = error_landsat_7 = error_sentinel_2 = error_alos_2 = ''
         if sl_config.LANDSAT_8_TIME_RANGE[0] < landslide_event_date < sl_config.LANDSAT_8_TIME_RANGE[1]:
             landsat_8_images = self.getLANDSAT8ImagesContainLandslide(landslide_lat, landslide_lng,landslide_event_date, landslide_event_collection)

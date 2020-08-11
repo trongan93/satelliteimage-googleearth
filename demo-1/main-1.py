@@ -1,9 +1,7 @@
-import time
 import ee
 import image
 
 import exportImage
-import cv2
 
 # ee.Authenticate()
 ee.Initialize()
@@ -21,8 +19,8 @@ ee.Initialize()
 # geometry = ee.Geometry.Rectangle([116.2621, 39.8412, 116.4849, 40.01236]);
 
 # get image by name
-img = image.getImage(ee,'LANDSAT/LC08/C01/T1_TOA/LC08_123032_20140515')
-exportImage.exportToDrive(ee,img,'test_export_landsat_3_bands')
+img = image.getImage(ee, 'LANDSAT/LC08/C01/T1_TOA/LC08_123032_20140515')
+exportImage.exportToDrive(ee, img, 'test_export_landsat_3_bands')
 
 # # get first image from image collection
 # fistImage = image.getImageFromImageCollection(ee)

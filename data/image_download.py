@@ -1,12 +1,14 @@
-import  ee
-import exportImage
+def get_url(name, image, scale, region):
+    path = image.getDownloadURL({
+        'name': (name),
+        'scale': scale,
+        'region': (region)
+    })
+    return path
+
 def getURLImage(ee, image, lat, lng, object_id, img_name):
-    # print(image.propertyNames())
-    # exportImage.exportToDrive(ee =ee,image = image, img_desciption='landsat_8_best_rgb', region = ee.Geometry.Point(lng,lat))
-    # exportImage.exportToDrive(ee,image=image,img_desciption='test_export_Aug_10')
     img_name = "{}_{}_{}_{}".format(object_id,lng, lat, img_name)
-    url = exportImage.get_url(name=img_name,image=image,scale=30,region=ee.Geometry.Point(lng,lat))
-    print(url)
+    url = get_url(name=img_name, image=image, scale=30, region=ee.Geometry.Point(lng, lat))
     return url
 
 def downloadBestRGBImages(satelliteImages, lat, lng, object_id, error_query):
