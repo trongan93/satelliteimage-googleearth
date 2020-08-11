@@ -1,10 +1,11 @@
 import time
+import webbrowser
 
 
-def exportToDrive(ee, image, img_desciption):
+def exportToDrive(ee, image, img_desciption, region):
     print("Exporting image to Drive")
     # Export the image, specifying scale and region.
-    task1 = ee.batch.Export.image.toDrive(image=image, description=img_desciption, scale=30);
+    task1 = ee.batch.Export.image.toDrive(image=image, description=img_desciption, scale=30, region=region);
     task1.start()
 
     while True:
@@ -35,5 +36,9 @@ def get_url(name, image, scale, region):
         'region':(region)
         })
 
-    webbrowser.open_new_tab(path)
+    # webbrowser.open_new_tab(path)
     return path
+
+# def exportImages(ee, images):
+#     ee.batch.Download
+#     print(count)
