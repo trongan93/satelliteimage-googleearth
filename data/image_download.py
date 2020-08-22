@@ -1,3 +1,8 @@
+import requests
+import os
+import errno
+import zipfile
+import configuration.fileconfiguration as fileconfig
 def get_url(name, image, scale, region):
     path = image.getDownloadURL({
         'name': (name),
@@ -55,5 +60,32 @@ def downloadBestRGBImages(satelliteImages, lat, lng, img_region, object_id, erro
 
     return urlLinks, errors_data
 
-def downloadFilesToLocal(urls):
+def getFilename_fromCd(cd):
+    """
+    Get filename from content-disposition
+    """
+    if not cd:
+        return None
+        fname = re.findall('filename=(.+)', cd)
+    if len(fname) == 0:
+        return None
+    return fname[0]
+
+def downloadLandslideFilesToLocal(objectid, urls):
+    print(objectid)
     print(urls)
+    saved_paths = []
+    for url in urls:
+        print("downloading url: ", url)
+        r = requests.get(url, allow_redirects = True)
+        # filename = getFilename_fromCd(r.headers.get('content-disposition'))
+        saved_path = "{}/{}/landslide".format(fileconfig.base_saved_data_path, objectid)
+        if not os.path.exists(saved_path):
+            os.makedirs(saved_path)
+        saved_path_file = "{}/downloaded.zip".format(saved_path)
+        open(saved_path_file,'wb').write(r.content)
+        with zipfile.ZipFile(saved_path_file, 'r') as zip_ref:
+            zip_ref.extractall(saved_path)
+        os.remove(saved_path_file)
+        saved_paths.append(saved_path)
+    return saved_paths
