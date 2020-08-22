@@ -23,6 +23,7 @@ def main(execute_option, gg_authenticate, sync_glc):
             landslide_best_rgb_satellites_image = imageQueries.getBestSatelliteRGBImage(landslide_rgb_satellites_images)
             url_links, errors_data = img_download.downloadBestRGBImages(landslide_best_rgb_satellites_image, landslideRecord.lat, landslideRecord.lng, landslide_image_region, landslideRecord.object_id, error_query)
             print(url_links)
+            print(errors_data)
             break #tmp - remove after test on 1 image
 
 

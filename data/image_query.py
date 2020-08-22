@@ -12,8 +12,8 @@ class SatelliteQueryImage:
             ee.Initialize()
 
     def defineImageRegion(self, landslideSize, landslide_lng, landslide_lat):
-        print(landslideSize)
-        print(landslide_lng, landslide_lat)
+        # print(landslideSize)
+        # print(landslide_lng, landslide_lat)
         # lef_lat, lef_lng = self.newPointFromPointByDistance(landslide_lng,landslide_lat,-3.750) # 3750(m) = 125 pixels * 30m/pixel
         lef_lat, lef_lng = self.newPointFromPointByDistance(landslide_lng, landslide_lat,
                                                             -5.304)  # 5304(m) = 177 pixels * 30m/pixel
