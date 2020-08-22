@@ -54,3 +54,6 @@ def downloadBestRGBImages(satelliteImages, lat, lng, img_region, object_id, erro
         errors_data.append(alos_2_error)
 
     return urlLinks, errors_data
+
+def downloadFilesToLocal(urls):
+    print(urls)
