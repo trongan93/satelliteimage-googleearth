@@ -17,10 +17,11 @@ def main(execute_option, gg_authenticate, sync_glc):
         for landslideRecord in landslideRecords:
             # print(landslideRecord.event_date)
             event_date = datetime.datetime.strptime(landslideRecord.event_date,'%Y-%m-%d %H:%M:%S.%f')
+            landslideImageRegion = imageQueries.defineImageRegion(landslideRecord.size, landslideRecord.lng, landslideRecord.lat)
             landslideSatellitesImages, error_query = imageQueries.getSatellitesImagesContainLandslide(landslideRecord.lat,landslideRecord.lng,event_date, event_date + datetime.timedelta(days=ls_config.LANDSLIDE_EVEN_COLLTECTION_TIME))
             landslideRGBSatellitesImages = imageQueries.getSatellitesImageRGB(landslideSatellitesImages)
             landslideBestRGBSatellitesImage = imageQueries.getBestSatelliteRGBImage(landslideRGBSatellitesImages)
-            urlLinks = img_download.downloadBestRGBImages(landslideBestRGBSatellitesImage, landslideRecord.lat, landslideRecord.lng, landslideRecord.object_id, error_query)
+            urlLinks = img_download.downloadBestRGBImages(landslideBestRGBSatellitesImage, landslideRecord.lat, landslideRecord.lng, landslideImageRegion, landslideRecord.object_id, error_query)
             print(urlLinks)
             break #tmp - remove after test on 1 image
 

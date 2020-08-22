@@ -1,5 +1,6 @@
 import ee
 import configuration.satelliteconfiguration as sl_config
+import math
 class SatelliteQueryImage:
     def __init__(self,authenticate):
         if authenticate == 1:
@@ -7,6 +8,39 @@ class SatelliteQueryImage:
             ee.Initialize()
         else:
             ee.Initialize()
+    def defineImageRegion(self, landslideSize, landslide_lng, landslide_lat):
+        print(landslideSize)
+        print(landslide_lng, landslide_lat)
+        lef_lat, lef_lng = self.newPointFromPointByDistance(landslide_lng,landslide_lat,-3.750) # 3750(m) = 125 pixels * 30m/pixel
+        right_lat, right_lng = self.newPointFromPointByDistance(landslide_lng, landslide_lat, 3.750)
+        print("lef_lat: {} , lef_lng: {} ; right_lat: {} , right_lng: {}".format(lef_lat, lef_lng, right_lat, right_lng))
+        rectangle = ee.Geometry.Rectangle(lef_lng, lef_lat, right_lng, right_lat)
+        return rectangle
+
+    def newPointFromPointByDistance(self, lng, lat, distance):
+        # Ref: https://stackoverflow.com/questions/7222382/get-lat-long-given-current-point-distance-and-bearing
+        # Distance in km
+        R = 6378.1  # Radius of the Earth
+        brng = 1.57  # Bearing is 90 degrees converted to radians.
+        # d = 15  # Distance in km
+        # lat2  52.20444 - the lat result I'm hoping for
+        # lon2  0.36056 - the long result I'm hoping for.
+
+        lat1 = math.radians(lat)  # Current lat point converted to radians
+        lon1 = math.radians(lng)  # Current long point converted to radians
+
+        lat2 = math.asin(math.sin(lat1) * math.cos(distance / R) + math.cos(lat1) * math.sin(distance / R) * math.cos(brng))
+
+        lon2 = lon1 + math.atan2(math.sin(brng) * math.sin(distance / R) * math.cos(lat1), math.cos(distance / R) - math.sin(lat1) * math.sin(lat2))
+
+        lat2 = math.degrees(lat2)
+        lon2 = math.degrees(lon2)
+        # print('current lat and lng: ', lat, lng )
+        # print(lat2)
+        # print(lon2)
+        # print('new lat and lng: ', lat2, lon2)
+        return lat2, lon2
+
 
     def getLANDSAT8ImagesContainLandslide(self, landslide_lat, landslide_lng, landslide_event_date, landslide_event_collection):
         return ee.ImageCollection(sl_config.LANDSAT_8).filterBounds(ee.Geometry.Point(landslide_lng,landslide_lat)).filterDate(landslide_event_date,landslide_event_collection).sort('CLOUDY_PIXEL_PERCENTAGE')
