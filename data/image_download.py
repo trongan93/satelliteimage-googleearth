@@ -28,10 +28,10 @@ def downloadBestRGBImages(satelliteImages, lat, lng, img_region, object_id, erro
     if landsat_8_error == '':
         landsat_8_best_rgb_link = getURLImage(ee,landsat_8_best_rgb, lat, lng, img_region, object_id, 'landsat_8_best_rgb')
         urlLinks.append(landsat_8_best_rgb_link)
-        # Test
-        from demo import exportImage as ex_img
-        ex_img.exportToDrive(ee,landsat_8_best_rgb,'landsat_8_best_rgb', img_region)
-        # End Test - remove when testing finish
+        # # Test
+        # from demo import exportImage as ex_img
+        # ex_img.exportToDrive(ee,landsat_8_best_rgb,'landsat_8_best_rgb', img_region)
+        # # End Test - remove when testing finish
     else:
         errors_data.append(landsat_8_error)
 

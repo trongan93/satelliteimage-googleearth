@@ -11,8 +11,10 @@ class SatelliteQueryImage:
     def defineImageRegion(self, landslideSize, landslide_lng, landslide_lat):
         print(landslideSize)
         print(landslide_lng, landslide_lat)
-        lef_lat, lef_lng = self.newPointFromPointByDistance(landslide_lng,landslide_lat,-3.750) # 3750(m) = 125 pixels * 30m/pixel
+        # lef_lat, lef_lng = self.newPointFromPointByDistance(landslide_lng,landslide_lat,-3.750) # 3750(m) = 125 pixels * 30m/pixel
+        lef_lat, lef_lng = self.newPointFromPointByDistance(landslide_lng, landslide_lat,-5.304)  # 5304(m) = 177 pixels * 30m/pixel
         right_lat, right_lng = self.newPointFromPointByDistance(landslide_lng, landslide_lat, 3.750)
+        right_lat, right_lng = self.newPointFromPointByDistance(landslide_lng, landslide_lat, 5.304)
         print("lef_lat: {} , lef_lng: {} ; right_lat: {} , right_lng: {}".format(lef_lat, lef_lng, right_lat, right_lng))
         rectangle = ee.Geometry.Rectangle(lef_lng, lef_lat, right_lng, right_lat)
         return rectangle
@@ -21,7 +23,9 @@ class SatelliteQueryImage:
         # Ref: https://stackoverflow.com/questions/7222382/get-lat-long-given-current-point-distance-and-bearing
         # Distance in km
         R = 6378.1  # Radius of the Earth
-        brng = 1.57  # Bearing is 90 degrees converted to radians.
+        # brng = 1.57  # Bearing is 90 degrees converted to radians.
+        # brng = 4.7123889804 # Bearing is 270 degrees converted to radians.
+        brng = 2.3561944902 # Bearing is 135 degrees converted to radians
         # d = 15  # Distance in km
         # lat2  52.20444 - the lat result I'm hoping for
         # lon2  0.36056 - the long result I'm hoping for.
