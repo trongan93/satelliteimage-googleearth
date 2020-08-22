@@ -15,7 +15,7 @@ class SatelliteQueryImage:
         lef_lat, lef_lng = self.newPointFromPointByDistance(landslide_lng, landslide_lat,-5.304)  # 5304(m) = 177 pixels * 30m/pixel
         right_lat, right_lng = self.newPointFromPointByDistance(landslide_lng, landslide_lat, 3.750)
         right_lat, right_lng = self.newPointFromPointByDistance(landslide_lng, landslide_lat, 5.304)
-        print("lef_lat: {} , lef_lng: {} ; right_lat: {} , right_lng: {}".format(lef_lat, lef_lng, right_lat, right_lng))
+        # print("lef_lat: {} , lef_lng: {} ; right_lat: {} , right_lng: {}".format(lef_lat, lef_lng, right_lat, right_lng))
         rectangle = ee.Geometry.Rectangle(lef_lng, lef_lat, right_lng, right_lat)
         return rectangle
 
