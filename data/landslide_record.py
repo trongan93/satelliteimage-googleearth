@@ -56,6 +56,9 @@ def readRecordData(input_file):
         if landslideRecord.landslide_category == 'landslide':
             landslideRecord = replace_landslide_size(landslideRecord)
             landslides.append(landslideRecord)
+        print('before cut: ', str(landslideRecord.event_date))
+        landslideRecord.event_date = str(landslideRecord.event_date)[0:19]
+        print('after cut: ', landslideRecord.event_date)
     return landslides
 
 def save_short_landslide_record(landslideRecords,path):
