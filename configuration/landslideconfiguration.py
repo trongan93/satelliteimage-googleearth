@@ -1,1 +1,1 @@
-LANDSLIDE_EVEN_COLLTECTION_TIME = 90 #day after landslide event
+LANDSLIDE_EVEN_COLLTECTION_TIME = 365 #day after landslide event
