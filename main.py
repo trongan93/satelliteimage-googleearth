@@ -21,8 +21,8 @@ def main(execute_option, gg_authenticate, sync_glc):
             landslide_satellites_images, error_query = imageQueries.getSatellitesImagesContainLandslide(landslideRecord.lat,landslideRecord.lng,event_date, event_date + datetime.timedelta(days=ls_config.LANDSLIDE_EVEN_COLLTECTION_TIME))
             landslide_rgb_satellites_images = imageQueries.getSatellitesImageRGB(landslide_satellites_images)
             landslide_best_rgb_satellites_image = imageQueries.getBestSatelliteRGBImage(landslide_rgb_satellites_images)
-            url_links, errors_data = img_download.downloadBestRGBImages(landslide_best_rgb_satellites_image, landslideRecord.lat, landslideRecord.lng, landslide_image_region, landslideRecord.object_id, error_query)
-            downloaded_paths = img_download.downloadLandslideFilesToLocal(landslideRecord.object_id, url_links)
+            url_links_obj, errors_data = img_download.downloadBestRGBImages(landslide_best_rgb_satellites_image, landslideRecord.lat, landslideRecord.lng, landslide_image_region, landslideRecord.object_id, error_query)
+            downloaded_paths = img_download.downloadLandslideFilesToLocal(landslideRecord.object_id, url_links_obj)
             print(errors_data)
             break #tmp - remove after test on 1 image
 
