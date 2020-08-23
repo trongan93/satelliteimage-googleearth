@@ -79,8 +79,8 @@ def getFilename_fromCd(cd):
     return fname[0]
 
 def downloadLandslideFilesToLocal(objectid, urls_obj):
-    print(objectid)
-    print(urls_obj)
+    # print(objectid)
+    # print(urls_obj)
     saved_paths = []
     for i in range(0, len(urls_obj), 2):
         satellite = urls_obj[i]
