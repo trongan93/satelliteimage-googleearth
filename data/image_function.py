@@ -3,13 +3,35 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import rasterio
-from rasterio.plot import reshape_as_raster, reshape_as_image
+
+# Function to normalize the grid values
+# https://automating-gis-processes.github.io/CSC/notebooks/L5/plotting-raster.html
+def normalize(array):
+    """Normalizes numpy arrays into scale 0.0 - 1.0"""
+    array_min, array_max = array.min(), array.max()
+    return ((array - array_min) / (array_max - array_min))
+
 def combineRGBBands(downloaded_paths):
     for download_path in downloaded_paths:
-        img1 = cv2.imread(os.path.join(download_path,os.listdir(download_path)[0]),0)
-        img2 = cv2.imread(os.path.join(download_path,os.listdir(download_path)[1]),0)
-        img3 = cv2.imread(os.path.join(download_path,os.listdir(download_path)[2]),0)
-        rgb_img = cv2.merge([img1,img2,img3])
-        cv2.imwrite(os.path.join(download_path,'rgb.tif'),rgb_img)
-        plt.imshow(rgb_img)
+        # https://automating-gis-processes.github.io/CSC/notebooks/L5/plotting-raster.html
+        path0 = os.path.join(download_path, os.listdir(download_path)[0])
+        path1 = os.path.join(download_path, os.listdir(download_path)[1])
+        path2 = os.path.join(download_path, os.listdir(download_path)[2])
+        dataset0 = rasterio.open(path0)
+        dataset1 = rasterio.open(path1)
+        dataset2 = rasterio.open(path2)
+
+        red = dataset0.read(1)
+        green = dataset1.read(1)
+        blue = dataset2.read(1)
+
+
+        # Normalize the bands
+        redn = normalize(red)
+        greenn = normalize(green)
+        bluen = normalize(blue)
+
+        # Create RGB natural color composite
+        rgb = np.dstack((redn, greenn, bluen))
+        plt.imshow(rgb)
         plt.show()
