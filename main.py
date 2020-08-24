@@ -27,7 +27,7 @@ def main(execute_option, gg_authenticate, sync_glc):
             if errors_data != []:
                 print('object {} gets errors'.format(landslideRecord.object_id))
                 print(errors_data)
-            # break #tmp - remove after test on 1 image
+            break #tmp - remove after test on 1 image
 
 
 
