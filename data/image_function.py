@@ -2,6 +2,7 @@ import os
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+from PIL import Image
 import rasterio
 
 # Function to normalize the grid values
@@ -33,5 +34,11 @@ def combineRGBBands(downloaded_paths):
 
         # Create RGB natural color composite
         rgb = np.dstack((redn, greenn, bluen))
-        plt.imshow(rgb)
-        plt.show()
+
+        max_val = np.max(rgb)
+        print(max_val)
+        rgb = rgb.astype(np.float64) / max_val # normalize the data to 0 - 1
+        rgb = 255 * rgb  # Now scale by 255
+        img = rgb.astype(np.uint8)
+
+        cv2.imwrite(os.path.join(download_path,'rgb.tif'),img)
