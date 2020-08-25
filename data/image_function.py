@@ -36,7 +36,7 @@ def combineRGBBands(downloaded_paths):
         rgb = np.dstack((redn, greenn, bluen))
 
         max_val = np.max(rgb)
-        print(max_val)
+        # print(max_val)
         rgb = rgb.astype(np.float64) / max_val # normalize the data to 0 - 1
         rgb = 255 * rgb  # Now scale by 255
         img = rgb.astype(np.uint8)
