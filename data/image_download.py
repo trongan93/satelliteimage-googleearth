@@ -4,12 +4,15 @@ import errno
 import zipfile
 import configuration.fileconfiguration as fileconfig
 def get_url(name, image, scale, region):
-    path = image.getDownloadURL({
-        'name': (name),
-        'scale': scale,
-        'region': (region)
-    })
-    return path
+    try:
+        path = image.getDownloadURL({
+            'name': (name),
+            'scale': scale,
+            'region': (region)
+        })
+        return path
+    except:
+        return ''
 
 def getURLImage(ee, image, lat, lng, img_region, object_id, img_name):
     img_name = "{}_{}_{}_{}".format(object_id,lng, lat, img_name)
@@ -32,8 +35,12 @@ def downloadBestRGBImages(satelliteImages, lat, lng, img_region, object_id, erro
 
     if landsat_8_error == '':
         landsat_8_best_rgb_link = getURLImage(ee,landsat_8_best_rgb, lat, lng, img_region, object_id, 'landsat_8_best_rgb')
-        urlLinks_obj.append('landsat_8')
-        urlLinks_obj.append(landsat_8_best_rgb_link)
+        if landsat_8_best_rgb_link != '':
+            urlLinks_obj.append('landsat_8')
+            urlLinks_obj.append(landsat_8_best_rgb_link)
+        else:
+            errors_data.append('landsat_8')
+            errors_data.append('NO DATA')
         # # Test
         # from demo import exportImage as ex_img
         # ex_img.exportToDrive(ee,landsat_8_best_rgb,'{}_landsat_8_best_rgb'.format(object_id), img_region)
@@ -44,24 +51,36 @@ def downloadBestRGBImages(satelliteImages, lat, lng, img_region, object_id, erro
 
     if landsat_7_error == '':
         landsat_7_best_rgb_link = getURLImage(ee,landsat_7_best_rgb, lat, lng, img_region, object_id, 'landsat_7_best_rgb')
-        urlLinks_obj.append('landsat_7')
-        urlLinks_obj.append(landsat_7_best_rgb_link)
+        if landsat_7_best_rgb_link != '':
+            urlLinks_obj.append('landsat_7')
+            urlLinks_obj.append(landsat_7_best_rgb_link)
+        else:
+            errors_data.append('landsat_7')
+            errors_data.append('NO DATA')
     else:
         errors_data.append('landsat_7')
         errors_data.append(landsat_7_error)
 
     if sentinel_2_error == '':
         sentinel_2_best_rgb_link = getURLImage(ee,sentinel_2_best_rgb, lat, lng, img_region, object_id, 'sentinel_2_best_rgb')
-        urlLinks_obj.append('sentinel_2')
-        urlLinks_obj.append(sentinel_2_best_rgb_link)
+        if sentinel_2_best_rgb_link != '':
+            urlLinks_obj.append('sentinel_2')
+            urlLinks_obj.append(sentinel_2_best_rgb_link)
+        else:
+            errors_data.append('sentinel_2')
+            errors_data.append('NO DATA')
     else:
         errors_data.append('sentinel_2')
         errors_data.append(sentinel_2_error)
 
     if alos_2_error == '':
         alos_2_best_rgb_link = getURLImage(ee,alos_2_best_rgb, lat, lng, img_region, object_id, 'alos_2_best_rgb')
-        urlLinks_obj.append('alos_2')
-        urlLinks_obj.append(alos_2_best_rgb_link)
+        if alos_2_best_rgb_link != '':
+            urlLinks_obj.append('alos_2')
+            urlLinks_obj.append(alos_2_best_rgb_link)
+        else:
+            errors_data.append('alos_2')
+            errors_data.append('NO DATA')
     else:
         errors_data.append('alos_2')
         errors_data.append(alos_2_error)
@@ -85,15 +104,16 @@ def downloadLandslideFilesToLocal(objectid, urls_obj):
     for i in range(0, len(urls_obj), 2):
         satellite = urls_obj[i]
         url = urls_obj[i+1]
-        r = requests.get(url, allow_redirects = True)
-        # filename = getFilename_fromCd(r.headers.get('content-disposition'))
-        saved_path = "{}/{}/{}/Positive".format(fileconfig.base_saved_data_path, objectid, satellite)
-        if not os.path.exists(saved_path):
-            os.makedirs(saved_path)
-        saved_path_file = "{}/downloaded.zip".format(saved_path)
-        open(saved_path_file,'wb').write(r.content)
-        with zipfile.ZipFile(saved_path_file, 'r') as zip_ref:
-            zip_ref.extractall(saved_path)
-        os.remove(saved_path_file)
-        saved_paths.append(saved_path)
+        if url != '':
+            r = requests.get(url, allow_redirects = True)
+            # filename = getFilename_fromCd(r.headers.get('content-disposition'))
+            saved_path = "{}/{}/{}/Positive".format(fileconfig.base_saved_data_path, objectid, satellite)
+            if not os.path.exists(saved_path):
+                os.makedirs(saved_path)
+            saved_path_file = "{}/downloaded.zip".format(saved_path)
+            open(saved_path_file,'wb').write(r.content)
+            with zipfile.ZipFile(saved_path_file, 'r') as zip_ref:
+                zip_ref.extractall(saved_path)
+            os.remove(saved_path_file)
+            saved_paths.append(saved_path)
     return saved_paths
