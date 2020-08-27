@@ -11,17 +11,26 @@ class SatelliteQueryImage:
         else:
             ee.Initialize()
 
-    def defineImageRegion(self, landslideSize, landslide_lng, landslide_lat):
+    def defineImageRegion(self, landslide_lng, landslide_lat):
         # print(landslideSize)
         # print(landslide_lng, landslide_lat)
         # lef_lat, lef_lng = self.newPointFromPointByDistance(landslide_lng,landslide_lat,-3.750) # 3750(m) = 125 pixels * 30m/pixel
-        lef_lat, lef_lng = self.newPointFromPointByDistance(landslide_lng, landslide_lat,
-                                                            -5.304)  # 5304(m) = 177 pixels * 30m/pixel
-        right_lat, right_lng = self.newPointFromPointByDistance(landslide_lng, landslide_lat, 3.750)
-        right_lat, right_lng = self.newPointFromPointByDistance(landslide_lng, landslide_lat, 5.304)
-        # print("lef_lat: {} , lef_lng: {} ; right_lat: {} , right_lng: {}".format(lef_lat, lef_lng, right_lat, right_lng))
-        rectangle = ee.Geometry.Rectangle(lef_lng, lef_lat, right_lng, right_lat)
-        return rectangle
+        # right_lat, right_lng = self.newPointFromPointByDistance(landslide_lng, landslide_lat, 3.750)
+
+        # lef_lat, lef_lng = self.newPointFromPointByDistance(landslide_lng, landslide_lat, -5.304)  # 5304(m) = 176.8 pixels * 30m/pixel
+        # right_lat, right_lng = self.newPointFromPointByDistance(landslide_lng, landslide_lat, 5.304)
+        # rectangle = ee.Geometry.Rectangle(lef_lng, lef_lat, right_lng, right_lat)
+
+        lef_lat_30_m_pixel, lef_lng_30_m_pixel = self.newPointFromPointByDistance(landslide_lng, landslide_lat, -3.750)
+        right_lat_30_m_pixel, right_lng_30_m_pixel = self.newPointFromPointByDistance(landslide_lng, landslide_lat, 3.750)
+        rectangle_30m_per_pixel = ee.Geometry.Rectangle(lef_lng_30_m_pixel, lef_lat_30_m_pixel, right_lng_30_m_pixel, right_lat_30_m_pixel)
+
+        lef_lat_10_m_pixel, lef_lng_10_m_pixel = self.newPointFromPointByDistance(landslide_lng, landslide_lat, -1.250)
+        right_lat_10_m_pixel, right_lng_10_m_pixel = self.newPointFromPointByDistance(landslide_lng, landslide_lat, 1.250)
+        rectangle_10m_per_pixel = ee.Geometry.Rectangle(lef_lng_10_m_pixel, lef_lat_10_m_pixel, right_lng_10_m_pixel, right_lat_10_m_pixel)
+
+        return [rectangle_30m_per_pixel,rectangle_10m_per_pixel]
+
 
     def newPointFromPointByDistance(self, lng, lat, distance):
         # Ref: https://stackoverflow.com/questions/7222382/get-lat-long-given-current-point-distance-and-bearing
@@ -51,59 +60,51 @@ class SatelliteQueryImage:
         # print('new lat and lng: ', lat2, lon2)
         return lat2, lon2
 
-    def getLANDSAT8ImagesContainLandslide(self, landslide_lat, landslide_lng, landslide_event_date,
-                                          landslide_event_collection):
+    def getLANDSAT8Images(self, lat, lng, start_date, end_date):
         return ee.ImageCollection(sl_config.LANDSAT_8).filterBounds(
-            ee.Geometry.Point(landslide_lng, landslide_lat)).filterDate(landslide_event_date,
-                                                                        landslide_event_collection).sort(
+            ee.Geometry.Point(lng, lat)).filterDate(start_date,
+                                                    end_date).sort(
             'CLOUDY_PIXEL_PERCENTAGE')
 
-    def getLANDSAT7ImagesContainLandslide(self, landslide_lat, landslide_lng, landslide_event_date,
-                                          landslide_event_collection):
+    def getLANDSAT7Images(self, lat, lng, start_date,
+                          end_date):
         return ee.ImageCollection(sl_config.LANDSAT_7).filterBounds(
-            ee.Geometry.Point(landslide_lng, landslide_lat)).filterDate(landslide_event_date,
-                                                                        landslide_event_collection).sort(
+            ee.Geometry.Point(lng, lat)).filterDate(start_date,
+                                                    end_date).sort(
             'CLOUDY_PIXEL_PERCENTAGE')
 
-    def getSENTINEL2ImagesContainLandslide(self, landslide_lat, landslide_lng, landslide_event_date,
-                                           landslide_event_collection):
+    def getSENTINEL2Images(self, lat, lng, start_date, end_date):
         return ee.ImageCollection(sl_config.SENTINEL_2).filterBounds(
-            ee.Geometry.Point(landslide_lng, landslide_lat)).filterDate(landslide_event_date,
-                                                                        landslide_event_collection).sort(
+            ee.Geometry.Point(lng, lat)).filterDate(start_date,
+                                                    end_date).sort(
             'CLOUDY_PIXEL_PERCENTAGE')
 
-    def getALOS2ImagesContainLandslide(self, landslide_lat, landslide_lng, landslide_event_date,
-                                       landslide_event_collection):
+    def getALOS2Images(self, lat, lng, start_date,
+                       end_date):
         return ee.ImageCollection(sl_config.ALOS_2).filterBounds(
-            ee.Geometry.Point(landslide_lng, landslide_lat)).filterDate(landslide_event_date,
-                                                                        landslide_event_collection).sort(
+            ee.Geometry.Point(lng, lat)).filterDate(start_date,
+                                                    end_date).sort(
             'CLOUDY_PIXEL_PERCENTAGE')
 
-    def getSatellitesImagesContainLandslide(self, landslide_lat, landslide_lng, landslide_event_date,
-                                            landslide_event_collection):
+    def getSatellitesImages(self, lat, lng, start_date, end_date):
         error_landsat_8 = error_landsat_7 = error_sentinel_2 = error_alos_2 = ''
-        if sl_config.LANDSAT_8_TIME_RANGE[0] < landslide_event_date < sl_config.LANDSAT_8_TIME_RANGE[1]:
-            landsat_8_images = self.getLANDSAT8ImagesContainLandslide(landslide_lat, landslide_lng,
-                                                                      landslide_event_date, landslide_event_collection)
+        if sl_config.LANDSAT_8_TIME_RANGE[0] < start_date < sl_config.LANDSAT_8_TIME_RANGE[1]:
+            landsat_8_images = self.getLANDSAT8Images(lat, lng, start_date, end_date)
         else:
             landsat_8_images = ''
             error_landsat_8 = 'Landsat 8: landslide event date not in satellite range'
-        if sl_config.LANDSAT_7_TIME_RANGE[0] < landslide_event_date < sl_config.LANDSAT_7_TIME_RANGE[1]:
-            landsat_7_images = self.getLANDSAT7ImagesContainLandslide(landslide_lat, landslide_lng,
-                                                                      landslide_event_date, landslide_event_collection)
+        if sl_config.LANDSAT_7_TIME_RANGE[0] < start_date < sl_config.LANDSAT_7_TIME_RANGE[1]:
+            landsat_7_images = self.getLANDSAT7Images(lat, lng, start_date, end_date)
         else:
             landsat_7_images = ''
             error_landsat_7 = 'Landsat 7: landslide event date not in satellite range'
-        if sl_config.SENTINEL_2_TIME_RANGE[0] < landslide_event_date < sl_config.SENTINEL_2_TIME_RANGE[1]:
-            sentinel_2_images = self.getSENTINEL2ImagesContainLandslide(landslide_lat, landslide_lng,
-                                                                        landslide_event_date,
-                                                                        landslide_event_collection)
+        if sl_config.SENTINEL_2_TIME_RANGE[0] < start_date < sl_config.SENTINEL_2_TIME_RANGE[1]:
+            sentinel_2_images = self.getSENTINEL2Images(lat, lng, start_date, end_date)
         else:
             sentinel_2_images = ''
             error_sentinel_2 = 'Sentinel 2: landslide event date not in satellite range'
-        if sl_config.ALOS_2_TIME_RANGE[0] < landslide_event_date < sl_config.ALOS_2_TIME_RANGE[1]:
-            alos_2_images = self.getALOS2ImagesContainLandslide(landslide_lat, landslide_lng, landslide_event_date,
-                                                                landslide_event_collection)
+        if sl_config.ALOS_2_TIME_RANGE[0] < start_date < sl_config.ALOS_2_TIME_RANGE[1]:
+            alos_2_images = self.getALOS2Images(lat, lng, start_date, end_date)
         else:
             alos_2_images = ''
             error_alos_2 = 'ALOS 2: landslide event date not in satellite range'

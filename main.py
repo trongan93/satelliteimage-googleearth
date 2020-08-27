@@ -13,27 +13,44 @@ def main(execute_option, gg_authenticate, sync_glc):
         print("Successful to change from GLC raw file to short datafile at: ", fconfig.short_glc_file)
 
     if execute_option == 1:
-        print("Executed selection 1; Query satellite from glc short file")
+        print("Executed selection 1; query satellite images contain landslide from glc short file")
         imageQueries = img_query.SatelliteQueryImage(authenticate=gg_authenticate)
         landslideRecords = record.read_short_landslide_record(fconfig.short_glc_file)
         for landslideRecord in landslideRecords:
             if landslideRecord.size == 'large' or landslideRecord.size == 'very_large' or landslideRecord.size == 'catastrophic':
-                print("IN PROCESSING ON object ",landslideRecord.object_id, " at ", landslideRecord.event_date, " ; landslide size is ", landslideRecord.size)
+                print("Landslide region: IN PROCESSING ON object ",landslideRecord.object_id, " at ", landslideRecord.event_date, " ; landslide size is ", landslideRecord.size)
                 event_date = datetime.datetime.strptime(landslideRecord.event_date,'%Y-%m-%d %H:%M:%S')
-                landslide_image_region = imageQueries.defineImageRegion(landslideRecord.size, landslideRecord.lng, landslideRecord.lat)
-                landslide_satellites_images, error_query = imageQueries.getSatellitesImagesContainLandslide(landslideRecord.lat,landslideRecord.lng,event_date, event_date + datetime.timedelta(days=ls_config.LANDSLIDE_EVEN_COLLTECTION_TIME))
+                landslide_image_region = imageQueries.defineImageRegion(landslideRecord.lng, landslideRecord.lat)
+                landslide_satellites_images, error_query = imageQueries.getSatellitesImages(landslideRecord.lat, landslideRecord.lng, event_date, event_date + datetime.timedelta(days=ls_config.LANDSLIDE_EVEN_COLLTECTION_TIME))
                 landslide_rgb_satellites_images = imageQueries.getSatellitesImageRGB(landslide_satellites_images)
                 landslide_best_rgb_satellites_image = imageQueries.getBestSatelliteRGBImage(landslide_rgb_satellites_images)
                 url_links_obj, errors_data = img_download.downloadBestRGBImages(landslide_best_rgb_satellites_image, landslideRecord.lat, landslideRecord.lng, landslide_image_region, landslideRecord.object_id, error_query)
-                downloaded_paths = img_download.downloadLandslideFilesToLocal(landslideRecord.object_id, url_links_obj)
+                downloaded_paths = img_download.downloadLandslideImageFilesToLocal(landslideRecord.object_id, url_links_obj)
                 img_function.combineRGBBands(downloaded_paths)
                 if errors_data != []:
                     print('object {} gets errors'.format(landslideRecord.object_id))
                     print(errors_data)
                 # break #tmp - remove after test on 1 image
-
-
-
+    elif execute_option == 2:
+        print("Executed selection 2; query satellite images with non-landslide from glc short file")
+        imageQueries = img_query.SatelliteQueryImage(authenticate=gg_authenticate)
+        landslideRecords = record.read_short_landslide_record(fconfig.short_glc_file)
+        for landslideRecord in landslideRecords:
+            if landslideRecord.size == 'large' or landslideRecord.size == 'very_large' or landslideRecord.size == 'catastrophic':
+                print("Non-landslide region: IN PROCESSING ON object ",landslideRecord.object_id, " at ", landslideRecord.event_date, " ; landslide size is ", landslideRecord.size)
+                event_date = datetime.datetime.strptime(landslideRecord.event_date, '%Y-%m-%d %H:%M:%S')
+                non_landslide_point_lat, non_landslide_point_lng = imageQueries.newPointFromPointByDistance(landslideRecord.lng, landslideRecord.lat, 20) #20 km to right from landslide point
+                non_landslide_image_region = imageQueries.defineImageRegion(non_landslide_point_lng, non_landslide_point_lat)
+                non_landslide_satellite_images, error_query = imageQueries.getSatellitesImages(non_landslide_point_lat, non_landslide_point_lng, event_date, event_date + datetime.timedelta(days=ls_config.LANDSLIDE_EVEN_COLLTECTION_TIME))
+                non_landslide_rgb_satellites_images = imageQueries.getSatellitesImageRGB(non_landslide_satellite_images)
+                non_landslide_best_rgb_satellites_image = imageQueries.getBestSatelliteRGBImage(non_landslide_rgb_satellites_images)
+                url_links_obj, errors_data = img_download.downloadBestRGBImages(non_landslide_best_rgb_satellites_image, non_landslide_point_lat, non_landslide_point_lng, non_landslide_image_region, landslideRecord.object_id, error_query)
+                downloaded_paths = img_download.downloadNonLandslideImageFilesToLocal(landslideRecord.object_id, url_links_obj)
+                img_function.combineRGBBands(downloaded_paths)
+                if errors_data != []:
+                    print('object {} gets errors'.format(landslideRecord.object_id))
+                    print(errors_data)
+                # break  # tmp - remove after test on 1 image
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description='parameters to execute main file')
