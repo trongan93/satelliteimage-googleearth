@@ -105,7 +105,13 @@ def downloadLandslideFilesToLocal(objectid, urls_obj):
         satellite = urls_obj[i]
         url = urls_obj[i+1]
         if url != '':
-            r = requests.get(url, allow_redirects = True)
+            try:
+                # r = requests.get(url, allow_redirects = True)
+                r = requests.get(url)
+                r.raise_for_status()
+            except requests.exceptions.RequestException as e:
+                print(e)
+                raise SystemExit(e)
             # filename = getFilename_fromCd(r.headers.get('content-disposition'))
             saved_path = "{}/{}/{}/Positive".format(fileconfig.base_saved_data_path, objectid, satellite)
             if not os.path.exists(saved_path):
