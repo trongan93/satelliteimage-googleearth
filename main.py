@@ -1,7 +1,9 @@
 import sys
-log = open("main-executing.log", "a")
-sys.stdout = log
+import os
 from configuration import fileconfiguration as fconfig, landslideconfiguration as ls_config
+log = open(os.path.join(fconfig.base_saved_data_path,"main-executing.log"), "a")
+sys.stdout = log
+
 from data import landslide_record as record
 from data import image_query as img_query, image_download as img_download, image_function as img_function
 import datetime
