@@ -30,7 +30,7 @@ def main(execute_option, gg_authenticate, sync_glc):
                 if errors_data != []:
                     print('object {} gets errors'.format(landslideRecord.object_id))
                     print(errors_data)
-                break #tmp - remove after test on 1 image
+                # break #tmp - remove after test on 1 image
     elif execute_option == 2:
         print("Executed selection 2; query satellite images with non-landslide from glc short file")
         imageQueries = img_query.SatelliteQueryImage(authenticate=gg_authenticate)
@@ -50,7 +50,7 @@ def main(execute_option, gg_authenticate, sync_glc):
                 if errors_data != []:
                     print('object {} gets errors'.format(landslideRecord.object_id))
                     print(errors_data)
-                break  # tmp - remove after test on 1 image
+                # break  # tmp - remove after test on 1 image
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description='parameters to execute main file')
