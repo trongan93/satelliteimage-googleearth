@@ -14,9 +14,9 @@ def get_url(name, image, scale, region):
     except:
         return ''
 
-def getURLImage(ee, image, lat, lng, img_region, object_id, img_name):
+def getURLImage(ee, image, lat, lng, img_region, object_id, scale, img_name):
     img_name = "{}_{}_{}_{}".format(object_id,lng, lat, img_name)
-    url = get_url(name=img_name, image=image, scale=30, region=img_region)
+    url = get_url(name=img_name, image=image, scale=scale, region=img_region)
     return url
 
 def downloadBestRGBImages(satelliteImages, lat, lng, img_region, object_id, error_query):
@@ -37,7 +37,7 @@ def downloadBestRGBImages(satelliteImages, lat, lng, img_region, object_id, erro
     rectangle_10m_per_pixel = img_region[1]
 
     if landsat_8_error == '':
-        landsat_8_best_rgb_link = getURLImage(ee,landsat_8_best_rgb, lat, lng, rectangle_30m_per_pixel, object_id, 'landsat_8_best_rgb')
+        landsat_8_best_rgb_link = getURLImage(ee,landsat_8_best_rgb, lat, lng, rectangle_30m_per_pixel, object_id, 30, 'landsat_8_best_rgb')
         if landsat_8_best_rgb_link != '':
             urlLinks_obj.append('landsat_8')
             urlLinks_obj.append(landsat_8_best_rgb_link)
@@ -53,7 +53,7 @@ def downloadBestRGBImages(satelliteImages, lat, lng, img_region, object_id, erro
         errors_data.append(landsat_8_error)
 
     if landsat_7_error == '':
-        landsat_7_best_rgb_link = getURLImage(ee,landsat_7_best_rgb, lat, lng, rectangle_30m_per_pixel, object_id, 'landsat_7_best_rgb')
+        landsat_7_best_rgb_link = getURLImage(ee,landsat_7_best_rgb, lat, lng, rectangle_30m_per_pixel, object_id, 30, 'landsat_7_best_rgb')
         if landsat_7_best_rgb_link != '':
             urlLinks_obj.append('landsat_7')
             urlLinks_obj.append(landsat_7_best_rgb_link)
@@ -65,10 +65,14 @@ def downloadBestRGBImages(satelliteImages, lat, lng, img_region, object_id, erro
         errors_data.append(landsat_7_error)
 
     if sentinel_2_error == '':
-        sentinel_2_best_rgb_link = getURLImage(ee,sentinel_2_best_rgb, lat, lng, rectangle_10m_per_pixel, object_id, 'sentinel_2_best_rgb')
+        sentinel_2_best_rgb_link = getURLImage(ee,sentinel_2_best_rgb, lat, lng, rectangle_10m_per_pixel, object_id, 10, 'sentinel_2_best_rgb')
         if sentinel_2_best_rgb_link != '':
             urlLinks_obj.append('sentinel_2')
             urlLinks_obj.append(sentinel_2_best_rgb_link)
+            # # Test
+            # from demo import exportImage as ex_img
+            # ex_img.exportToDrive(ee,sentinel_2_best_rgb,'{}_sentinel_2_best_rgb'.format(object_id), img_region)
+            # # End Test - remove when testing finish
         else:
             errors_data.append('sentinel_2')
             errors_data.append('NO DATA')
@@ -77,7 +81,7 @@ def downloadBestRGBImages(satelliteImages, lat, lng, img_region, object_id, erro
         errors_data.append(sentinel_2_error)
 
     if alos_2_error == '':
-        alos_2_best_rgb_link = getURLImage(ee,alos_2_best_rgb, lat, lng, rectangle_10m_per_pixel, object_id, 'alos_2_best_rgb')
+        alos_2_best_rgb_link = getURLImage(ee,alos_2_best_rgb, lat, lng, rectangle_10m_per_pixel, object_id, 10, 'alos_2_best_rgb')
         if alos_2_best_rgb_link != '':
             urlLinks_obj.append('alos_2')
             urlLinks_obj.append(alos_2_best_rgb_link)

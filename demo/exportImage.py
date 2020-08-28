@@ -5,7 +5,7 @@ import webbrowser
 def exportToDrive(ee, image, img_desciption, region):
     print("Exporting image to Drive")
     # Export the image, specifying scale and region.
-    task1 = ee.batch.Export.image.toDrive(image=image, description=img_desciption, scale=30, region=region);
+    task1 = ee.batch.Export.image.toDrive(image=image, description=img_desciption, scale=10, region=region);
     task1.start()
 
     while True:

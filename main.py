@@ -1,6 +1,6 @@
 import sys
-log = open("main-executing.log", "a")
-sys.stdout = log
+# log = open("main-executing.log", "a")
+# sys.stdout = log
 from configuration import fileconfiguration as fconfig, landslideconfiguration as ls_config
 from data import landslide_record as record
 from data import image_query as img_query, image_download as img_download, image_function as img_function
@@ -30,7 +30,7 @@ def main(execute_option, gg_authenticate, sync_glc):
                 if errors_data != []:
                     print('object {} gets errors'.format(landslideRecord.object_id))
                     print(errors_data)
-                # break #tmp - remove after test on 1 image
+                break #tmp - remove after test on 1 image
     elif execute_option == 2:
         print("Executed selection 2; query satellite images with non-landslide from glc short file")
         imageQueries = img_query.SatelliteQueryImage(authenticate=gg_authenticate)
@@ -39,7 +39,7 @@ def main(execute_option, gg_authenticate, sync_glc):
             if landslideRecord.size == 'large' or landslideRecord.size == 'very_large' or landslideRecord.size == 'catastrophic':
                 print("Non-landslide region: IN PROCESSING ON object ",landslideRecord.object_id, " at ", landslideRecord.event_date, " ; landslide size is ", landslideRecord.size)
                 event_date = datetime.datetime.strptime(landslideRecord.event_date, '%Y-%m-%d %H:%M:%S')
-                non_landslide_point_lat, non_landslide_point_lng = imageQueries.newPointFromPointByDistance(landslideRecord.lng, landslideRecord.lat, 20) #20 km to right from landslide point
+                non_landslide_point_lat, non_landslide_point_lng = imageQueries.newPointFromPointByDistance(landslideRecord.lng, landslideRecord.lat, 20) #20 km to right-left with angle 45 degree from landslide point
                 non_landslide_image_region = imageQueries.defineImageRegion(non_landslide_point_lng, non_landslide_point_lat)
                 non_landslide_satellite_images, error_query = imageQueries.getSatellitesImages(non_landslide_point_lat, non_landslide_point_lng, event_date, event_date + datetime.timedelta(days=ls_config.LANDSLIDE_EVEN_COLLTECTION_TIME))
                 non_landslide_rgb_satellites_images = imageQueries.getSatellitesImageRGB(non_landslide_satellite_images)
@@ -50,7 +50,7 @@ def main(execute_option, gg_authenticate, sync_glc):
                 if errors_data != []:
                     print('object {} gets errors'.format(landslideRecord.object_id))
                     print(errors_data)
-                # break  # tmp - remove after test on 1 image
+                break  # tmp - remove after test on 1 image
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description='parameters to execute main file')
