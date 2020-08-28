@@ -1,6 +1,8 @@
 # Satellite images downloading
-To build a landslide image from GLC records. A Landsat, Sentinel, and ALOS satellite image programs are used to create images data.
 ### Author: Trong-An Bui (http://buitrongan.com/)
+
+To build a landslide image from GLC records by Google Earth Engine API. A Landsat, Sentinel, and ALOS satellite image programs are used to create images data.
+The old version is build on February 10, 2020 and availble at https://github.com/trongan93/AILandimage
 
 This is a part of the project "Landslide prediction from Satellite images". More detailed details at my personal website and my publications (listened below).
 
