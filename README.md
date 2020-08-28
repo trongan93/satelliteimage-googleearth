@@ -4,7 +4,7 @@ The old version is build from August 30, 2019, the last commit is July 26, 2020 
 From the same motivation with old version. This project is used Google Earth Engine API to build a landslide image from GLC records. A Landsat, Sentinel, and ALOS satellite image programs are used to create images data. This project is improved the performance, query condition and downloading speed
 
 
-This is a part of the project "Landslide prediction from Satellite images". More detailed details at my personal website and my publications (listened below).
+This is a part of the project "Landslide prediction from Satellite images". Project details at my personal website and my publications (listened below).
 
 Please refer my records.
 
