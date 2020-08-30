@@ -9,7 +9,7 @@ LANDSAT_7_TIME_RANGE = [datetime.datetime.strptime('1999-01-01','%Y-%m-%d'), dat
 SENTINEL_2_TIME_RANGE = [datetime.datetime.strptime('2015-06-23','%Y-%m-%d'), datetime.datetime.now()]
 ALOS_2_TIME_RANGE = [datetime.datetime.strptime('2006-04-26','%Y-%m-%d'), datetime.datetime.strptime('2011-04-18','%Y-%m-%d')]
 
-CLOUDY_PERCENTAGE_FILTER = 10
+CLOUDY_PERCENTAGE_FILTER = 20
 
 ALL_SATELLITE = []
 ALL_SATELLITE.append([LANDSAT_8,LANDSAT_7,SENTINEL_2,ALOS_2])

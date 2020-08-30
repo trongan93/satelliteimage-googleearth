@@ -61,18 +61,24 @@ class SatelliteQueryImage:
         return lat2, lon2
 
     def getLANDSAT8Images(self, lat, lng, start_date, end_date):
+        # return ee.ImageCollection(sl_config.LANDSAT_8).filterBounds(
+        #     ee.Geometry.Point(lng, lat)).filterDate(start_date, end_date).filter(ee.Filter.lte('CLOUDY_PIXEL_PERCENTAGE',sl_config.CLOUDY_PERCENTAGE_FILTER)).sort('CLOUDY_PIXEL_PERCENTAGE')
+
         return ee.ImageCollection(sl_config.LANDSAT_8).filterBounds(
-            ee.Geometry.Point(lng, lat)).filterDate(start_date, end_date).filter(ee.Filter.lte('CLOUDY_PIXEL_PERCENTAGE',sl_config.CLOUDY_PERCENTAGE_FILTER)).sort('CLOUDY_PIXEL_PERCENTAGE')
+            ee.Geometry.Point(lng, lat)).filterDate(start_date, end_date).filterMetadata('CLOUD_COVER', 'less_than', sl_config.CLOUDY_PERCENTAGE_FILTER).sort('CLOUDY_PIXEL_PERCENTAGE')
 
     def getLANDSAT7Images(self, lat, lng, start_date,
                           end_date):
-        return ee.ImageCollection(sl_config.LANDSAT_7).filterBounds(ee.Geometry.Point(lng, lat)).filterDate(start_date, end_date).filter(ee.Filter.lte('CLOUDY_PIXEL_PERCENTAGE',sl_config.CLOUDY_PERCENTAGE_FILTER)).sort('CLOUDY_PIXEL_PERCENTAGE')
+        # return ee.ImageCollection(sl_config.LANDSAT_7).filterBounds(ee.Geometry.Point(lng, lat)).filterDate(start_date, end_date).filter(ee.Filter.lte('CLOUDY_PIXEL_PERCENTAGE',sl_config.CLOUDY_PERCENTAGE_FILTER)).sort('CLOUDY_PIXEL_PERCENTAGE')
+        return ee.ImageCollection(sl_config.LANDSAT_7).filterBounds(ee.Geometry.Point(lng, lat)).filterDate(start_date, end_date).filterMetadata('CLOUD_COVER', 'less_than', sl_config.CLOUDY_PERCENTAGE_FILTER).sort('CLOUDY_PIXEL_PERCENTAGE')
 
     def getSENTINEL2Images(self, lat, lng, start_date, end_date):
-        return ee.ImageCollection(sl_config.SENTINEL_2).filterBounds(ee.Geometry.Point(lng, lat)).filterDate(start_date, end_date).filter(ee.Filter.lte('CLOUDY_PIXEL_PERCENTAGE',sl_config.CLOUDY_PERCENTAGE_FILTER)).sort('CLOUDY_PIXEL_PERCENTAGE')
+        # return ee.ImageCollection(sl_config.SENTINEL_2).filterBounds(ee.Geometry.Point(lng, lat)).filterDate(start_date, end_date).filter(ee.Filter.lte('CLOUDY_PIXEL_PERCENTAGE',sl_config.CLOUDY_PERCENTAGE_FILTER)).sort('CLOUDY_PIXEL_PERCENTAGE')
+        return ee.ImageCollection(sl_config.SENTINEL_2).filterBounds(ee.Geometry.Point(lng, lat)).filterDate(start_date,end_date).filterMetadata('CLOUD_COVERAGE_ASSESSMENT', 'less_than', sl_config.CLOUDY_PERCENTAGE_FILTER).sort('CLOUDY_PIXEL_PERCENTAGE')
 
     def getALOS2Images(self, lat, lng, start_date, end_date):
-        return ee.ImageCollection(sl_config.ALOS_2).filterBounds(ee.Geometry.Point(lng, lat)).filter(ee.Filter.lte('CLOUDY_PIXEL_PERCENTAGE',sl_config.CLOUDY_PERCENTAGE_FILTER)).filterDate(start_date,end_date).sort('CLOUDY_PIXEL_PERCENTAGE')
+        # return ee.ImageCollection(sl_config.ALOS_2).filterBounds(ee.Geometry.Point(lng, lat)).filter(ee.Filter.lte('CLOUDY_PIXEL_PERCENTAGE',sl_config.CLOUDY_PERCENTAGE_FILTER)).filterDate(start_date,end_date).sort('CLOUDY_PIXEL_PERCENTAGE')
+        return ee.ImageCollection(sl_config.ALOS_2).filterBounds(ee.Geometry.Point(lng, lat)).filterDate(start_date,end_date).filterMetadata('CLOUD_COVER', 'less_than', sl_config.CLOUDY_PERCENTAGE_FILTER).sort('CLOUDY_PIXEL_PERCENTAGE')
 
     def getSatellitesImages(self, lat, lng, start_date, end_date):
         error_landsat_8 = error_landsat_7 = error_sentinel_2 = error_alos_2 = ''

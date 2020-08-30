@@ -1,4 +1,4 @@
-from model.landslideModel import LandslideRecord, LandslideDownloadImageData
+from model.landslideModel import LandslideRecord, LandslideStorageImageData
 
 import pandas as pd
 import os
@@ -67,7 +67,7 @@ def save_short_landslide_record(landslideRecords,path):
         landslideRecords_Array.append(landslideRecord.toArray())
     # print(landslideRecords_Array[0])
     df = pd.DataFrame(landslideRecords_Array, columns=['object_id','event_id','lat','lng','event_date','size','country','landslide_category'])
-    print(df)
+    # print(df)
     df.to_csv(path, index=False, header=True)
     print('done to save a short glc file')
 
@@ -82,6 +82,21 @@ def read_short_landslide_record(path):
                                           country=recordItem['country'])
         landslides.append(landslideRecord)
     return landslides
+
+def getRecordDownloadedPaths(record, storage_paths):
+    return LandslideStorageImageData(object_id=record.object_id, landslide_category=record.landslide_category, event_id=record.event_id, event_date=record.event_date, country=record.country, storage_paths=storage_paths, lat=record.lat, lng=record.lng, size=record.size)
+
+def saveDownloadPaths(records, path):
+    records_array = []
+    for record in records:
+        records_array.append(record.toArray())
+    df = pd.DataFrame(records_array, columns=['object_id', 'event_id', 'lat', 'lng', 'event_date', 'size', 'country', 'landslide_category', 'storage_paths'])
+    # print(df)
+    df.to_csv(path, index=False, header=True)
+    print('done to save a downloaded paths')
+
+def saveNonLandslideDownloadedPaths(landslideRecord, paths):
+    print(paths)
 
 if __name__ == "__main__":
     print("Test landslide record")

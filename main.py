@@ -18,6 +18,7 @@ def main(execute_option, gg_authenticate, sync_glc):
         print("Executed selection 1; query satellite images contain landslide from glc short file")
         imageQueries = img_query.SatelliteQueryImage(authenticate=gg_authenticate)
         landslideRecords = record.read_short_landslide_record(fconfig.short_glc_file)
+        landslide_storage_records = []
         for landslideRecord in landslideRecords:
             if landslideRecord.size == 'large' or landslideRecord.size == 'very_large' or landslideRecord.size == 'catastrophic':
                 print("Landslide region: IN PROCESSING ON object ",landslideRecord.object_id, " at ", landslideRecord.event_date, " ; landslide size is ", landslideRecord.size)
@@ -28,15 +29,18 @@ def main(execute_option, gg_authenticate, sync_glc):
                 landslide_best_rgb_satellites_image = imageQueries.getBestSatelliteRGBImage(landslide_rgb_satellites_images)
                 url_links_obj, errors_data = img_download.downloadBestRGBImages(landslide_best_rgb_satellites_image, landslideRecord.lat, landslideRecord.lng, landslide_image_region, landslideRecord.object_id, error_query)
                 downloaded_paths = img_download.downloadLandslideImageFilesToLocal(landslideRecord.object_id, url_links_obj)
-                img_function.combineRGBBands(downloaded_paths)
+                rgb_paths = img_function.combineRGBBands(downloaded_paths)
+                landslide_storage_records.append(record.getRecordDownloadedPaths(landslideRecord, rgb_paths))
                 if errors_data != []:
                     print('object {} gets errors'.format(landslideRecord.object_id))
                     print(errors_data)
-                # break #tmp - remove after test on 1 image
+                break # tmp - remove after test on 1 image
+        record.saveDownloadPaths(landslide_storage_records, fconfig.landslide_storage_saved_paths)
     elif execute_option == 2:
         print("Executed selection 2; query satellite images with non-landslide from glc short file")
         imageQueries = img_query.SatelliteQueryImage(authenticate=gg_authenticate)
         landslideRecords = record.read_short_landslide_record(fconfig.short_glc_file)
+        non_landslide_storage_records = []
         for landslideRecord in landslideRecords:
             if landslideRecord.size == 'large' or landslideRecord.size == 'very_large' or landslideRecord.size == 'catastrophic':
                 print("Non-landslide region: IN PROCESSING ON object ",landslideRecord.object_id, " at ", landslideRecord.event_date, " ; landslide size is ", landslideRecord.size)
@@ -48,11 +52,13 @@ def main(execute_option, gg_authenticate, sync_glc):
                 non_landslide_best_rgb_satellites_image = imageQueries.getBestSatelliteRGBImage(non_landslide_rgb_satellites_images)
                 url_links_obj, errors_data = img_download.downloadBestRGBImages(non_landslide_best_rgb_satellites_image, non_landslide_point_lat, non_landslide_point_lng, non_landslide_image_region, landslideRecord.object_id, error_query)
                 downloaded_paths = img_download.downloadNonLandslideImageFilesToLocal(landslideRecord.object_id, url_links_obj)
-                img_function.combineRGBBands(downloaded_paths)
+                rgb_paths = img_function.combineRGBBands(downloaded_paths)
+                non_landslide_storage_records.append(record.getRecordDownloadedPaths(landslideRecord, rgb_paths))
                 if errors_data != []:
                     print('object {} gets errors'.format(landslideRecord.object_id))
                     print(errors_data)
-                # break  # tmp - remove after test on 1 image
+                break  # tmp - remove after test on 1 image
+        record.saveDownloadPaths(non_landslide_storage_records, fconfig.non_landslide_storage_saved_paths)
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description='parameters to execute main file')

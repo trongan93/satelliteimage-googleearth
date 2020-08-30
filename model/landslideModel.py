@@ -28,10 +28,17 @@ class LandslideRecord(LandslideData):
                 self.landslide_category]
 
 
-class LandslideDownloadImageData(LandslideData):
-    def __init__(self, startDate, endDate, cloudCover, station, downloadPath):
-        self.startDate = startDate
-        self.endData = endDate
-        self.cloudCover = cloudCover
-        self.station = station
-        self.downloadPath = downloadPath
+class LandslideStorageImageData(LandslideRecord):
+    def __init__(self, object_id, event_id, lat, lng, event_date, size, country, landslide_category, storage_paths):
+        self.object_id = object_id
+        self.event_id = event_id
+        self.lat = lat
+        self.lng = lng
+        self.event_date = event_date
+        self.size = size
+        self.country = country
+        self.landslide_category = landslide_category
+        self.storage_paths = storage_paths
+    def toArray(self):
+        return [self.object_id, self.event_id, self.lat, self.lng, self.event_date, self.size, self.country,
+                self.landslide_category, self.storage_paths]
