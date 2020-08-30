@@ -34,7 +34,7 @@ def main(execute_option, gg_authenticate, sync_glc):
                 if errors_data != []:
                     print('object {} gets errors'.format(landslideRecord.object_id))
                     print(errors_data)
-                break # tmp - remove after test on 1 image
+                # break # tmp - remove after test on 1 image
         record.saveDownloadPaths(landslide_storage_records, fconfig.landslide_storage_saved_paths)
     elif execute_option == 2:
         print("Executed selection 2; query satellite images with non-landslide from glc short file")
@@ -57,7 +57,7 @@ def main(execute_option, gg_authenticate, sync_glc):
                 if errors_data != []:
                     print('object {} gets errors'.format(landslideRecord.object_id))
                     print(errors_data)
-                break  # tmp - remove after test on 1 image
+                # break  # tmp - remove after test on 1 image
         record.saveDownloadPaths(non_landslide_storage_records, fconfig.non_landslide_storage_saved_paths)
 if __name__ == "__main__":
     import argparse
