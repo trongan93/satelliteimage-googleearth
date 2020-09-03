@@ -6,3 +6,4 @@ short_glc_file = Path(base_path,'raw','short_glc.csv')
 base_saved_data_path = "/mnt/d/ProjectData/Landslide_Google_Earth_Engine"
 landslide_storage_saved_paths = Path(base_saved_data_path,'landslide_downloaded_paths.csv')
 non_landslide_storage_saved_paths = Path(base_saved_data_path,'non_landslide_downloaded_paths.csv')
+dataset_path = "/mnt/d/ProjectData/LandslideDataset"

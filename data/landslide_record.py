@@ -95,8 +95,14 @@ def saveDownloadPaths(records, path):
     df.to_csv(path, index=False, header=True)
     print('done to save a downloaded paths')
 
-def saveNonLandslideDownloadedPaths(landslideRecord, paths):
-    print(paths)
+def readDownloadedPaths(path):
+    print(path)
+    downloaded_data = pd.read_csv(path)
+    downloaded_records = []
+    for index, recordItem in downloaded_data.iterrows():
+        downloaded_record = LandslideStorageImageData(object_id=recordItem['object_id'], event_id=recordItem['event_id'], lat=recordItem['lat'], lng=recordItem['lat'], country=recordItem['country'], size=recordItem['size'], landslide_category=recordItem['landslide_category'], storage_paths=recordItem['storage_paths'], event_date=recordItem['event_date'])
+        downloaded_records.append(downloaded_record)
+    return downloaded_records
 
 if __name__ == "__main__":
     print("Test landslide record")

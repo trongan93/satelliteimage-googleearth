@@ -59,6 +59,42 @@ def main(execute_option, gg_authenticate, sync_glc):
                     print(errors_data)
                 # break  # tmp - remove after test on 1 image
         record.saveDownloadPaths(non_landslide_storage_records, fconfig.non_landslide_storage_saved_paths)
+    elif execute_option == 3:
+        print("Executed selection 3; build dataset folder")
+        landslideDownloadedRecords = record.readDownloadedPaths(fconfig.landslide_storage_saved_paths)
+        for landslideDownloaded in landslideDownloadedRecords:
+            print('move positive data at ', landslideDownloaded.object_id)
+            downloaded_paths_string = landslideDownloaded.storage_paths
+            if type(downloaded_paths_string) != str:
+                continue
+            downloaded_paths = downloaded_paths_string.split(',')
+            for downloaded_path in downloaded_paths:
+                if downloaded_path != '' and downloaded_path != ' ':
+                    downloaded_path = downloaded_path.strip()
+                    download_path_values = downloaded_path.split('/')
+                    new_file_name = "{}_{}_{}".format(download_path_values[5].strip(), download_path_values[6].strip(), download_path_values[8].strip())
+                    new_file_path = os.path.join(fconfig.dataset_path,"Positive",new_file_name)
+                    img_download.copy_image_to_dataset(downloaded_path,new_file_path)
+            # break # tmp - remove after test on 1 image
+
+        nonLandslideDownloadedRecords = record.readDownloadedPaths(fconfig.non_landslide_storage_saved_paths)
+        for nonLandslideDownloaded in nonLandslideDownloadedRecords:
+            print('move negative data at ', nonLandslideDownloaded.object_id)
+            downloaded_paths_string = nonLandslideDownloaded.storage_paths
+            if type(downloaded_paths_string) != str:
+                continue
+            downloaded_paths = downloaded_paths_string.split(',')
+            for downloaded_path in downloaded_paths:
+                if downloaded_path != '' and downloaded_path != ' ':
+                    downloaded_path = downloaded_path.strip()
+                    download_path_values = downloaded_path.split('/')
+                    new_file_name = "{}_{}_{}".format(download_path_values[5].strip(), download_path_values[6].strip(),
+                                                      download_path_values[8].strip())
+                    new_file_path = os.path.join(fconfig.dataset_path, "Negative", new_file_name)
+                    img_download.copy_image_to_dataset(downloaded_path, new_file_path)
+            # break  # tmp - remove after test on 1 image
+
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description='parameters to execute main file')

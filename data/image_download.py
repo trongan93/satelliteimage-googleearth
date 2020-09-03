@@ -2,6 +2,7 @@ import requests
 import os
 import errno
 import zipfile
+import shutil
 import configuration.fileconfiguration as fileconfig
 def get_url(name, image, scale, region):
     try:
@@ -157,3 +158,8 @@ def downloadNonLandslideImageFilesToLocal(objectid, urls_obj):
             os.remove(saved_path_file)
             saved_paths.append(saved_path)
     return saved_paths
+
+
+def copy_image_to_dataset(source_file, destination_file):
+    shutil.copyfile(source_file, destination_file)
+
