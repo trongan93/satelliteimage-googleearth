@@ -1,8 +1,7 @@
 # Satellite images downloading
 ### Author: Trong-An Bui (http://buitrongan.com/)
 The old version is build from August 30, 2019, the last commit is July 26, 2020 and availble at https://github.com/trongan93/AILandimage.
-From the same motivation with old version, this project is used Google Earth Engine API to build a landslide image from GLC records. Landsat, Sentinel, and ALOS satellite image programs are used to create images data. This project is improved the performance, query condition and downloading speed
-
+From the same motivation with old version, this project is used Google Earth Engine API to build a landslide images from GLC records. Landsat, Sentinel, and ALOS satellite image programs are used to create images data. This project is improved the performance, query condition and downloading speed.
 
 This is a part of the project "Landslide prediction from Satellite images". Project details at my personal website and my publications (listened below).
 
