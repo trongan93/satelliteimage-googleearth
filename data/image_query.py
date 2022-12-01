@@ -169,3 +169,11 @@ class SatelliteQueryImage:
 
         return {'ee': ee, 'landsat_8_best_rgb': landsat_8_best_rgb, 'landsat_7_best_rgb': landsat_7_best_rgb,
                 'sentinel_2_best_rgb': sentinel_2_best_rgb, 'alos_2_best_rgb': alos_2_best_rgb}
+
+class RandomLowLightImage():
+    def __init__(self, authenticate):
+        if authenticate == 1:
+            ee.Authenticate()
+            ee.Initialize()
+        else:
+            ee.Initialize()
