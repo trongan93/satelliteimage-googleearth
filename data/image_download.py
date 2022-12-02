@@ -14,10 +14,27 @@ def get_url(name, image, scale, region):
         return path
     except:
         return ''
+def get_raw_url(image):
+    try:
+        path = image.getDownloadURL({
+            'name': 'single_band',
+            'bands': [
+                {'id': 'B2', 'crs': 'EPSG: 4326'},
+                {'id': 'B3', 'crs': 'EPSG: 4326'},
+                {'id': 'B4', 'crs': 'EPSG: 4326'}
+            ]
+        })
+        return path
+    except:
+        return ''
 
 def getURLImage(ee, image, lat, lng, img_region, object_id, scale, img_name):
     img_name = "{}_{}_{}_{}".format(object_id,lng, lat, img_name)
     url = get_url(name=img_name, image=image, scale=scale, region=img_region)
+    return url
+
+def getURLRawImage(image):
+    url = get_raw_url(image)
     return url
 
 def downloadBestRGBImages(satelliteImages, lat, lng, img_region, object_id, error_query):
@@ -163,3 +180,6 @@ def downloadNonLandslideImageFilesToLocal(objectid, urls_obj):
 def copy_image_to_dataset(source_file, destination_file):
     shutil.copyfile(source_file, destination_file)
 
+def downloadBestRGBImages(ee, satelliteImages):
+    landsat_9_best_rgb_link = getURLRawImage(satelliteImages)
+    print("donwload link: ", landsat_9_best_rgb_link)

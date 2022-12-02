@@ -177,3 +177,9 @@ class RandomLowLightImage():
             ee.Initialize()
         else:
             ee.Initialize()
+    def getLowLightImages_Landsat9(self, cloud_lte = 100):
+        cloud_filter = ee.Filter.lte('CLOUD_COVER', cloud_lte)
+        images_collection = ee.ImageCollection(sl_config.LANDSAT_9).filter(cloud_filter)
+        return  images_collection
+    def getBestImage(self, images_collection):
+        return ee, ee.Image(images_collection.first())
