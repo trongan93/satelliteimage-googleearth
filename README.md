@@ -18,3 +18,7 @@ Publication:
 ----
 ## Extend version
 I am working to build a low light satellite image dataset. (Current processing)
+Packages requirement: 
+> pip install [pakage]
+> earthengine-api
+
