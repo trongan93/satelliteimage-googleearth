@@ -11,7 +11,7 @@ class SatelliteQueryImage:
         else:
             ee.Initialize()
 
-    def defineImageRegion(self, landslide_lng, landslide_lat):
+    def defineImageRegion(self, lng, lat):
         # print(landslideSize)
         # print(landslide_lng, landslide_lat)
         # lef_lat, lef_lng = self.newPointFromPointByDistance(landslide_lng,landslide_lat,-3.750) # 3750(m) = 125 pixels * 30m/pixel
@@ -21,12 +21,12 @@ class SatelliteQueryImage:
         # right_lat, right_lng = self.newPointFromPointByDistance(landslide_lng, landslide_lat, 5.304)
         # rectangle = ee.Geometry.Rectangle(lef_lng, lef_lat, right_lng, right_lat)
 
-        lef_lat_30_m_pixel, lef_lng_30_m_pixel = self.newPointFromPointByDistance(landslide_lng, landslide_lat, -5.310) #phai tinh theo canh huyen cua goc 90 do
-        right_lat_30_m_pixel, right_lng_30_m_pixel = self.newPointFromPointByDistance(landslide_lng, landslide_lat, 5.310)
+        lef_lat_30_m_pixel, lef_lng_30_m_pixel = self.newPointFromPointByDistance(lng, lat, -5.310) #phai tinh theo canh huyen cua goc 90 do
+        right_lat_30_m_pixel, right_lng_30_m_pixel = self.newPointFromPointByDistance(lng, lat, 5.310)
         rectangle_30m_per_pixel = ee.Geometry.Rectangle(lef_lng_30_m_pixel, lef_lat_30_m_pixel, right_lng_30_m_pixel, right_lat_30_m_pixel)
 
-        lef_lat_10_m_pixel, lef_lng_10_m_pixel = self.newPointFromPointByDistance(landslide_lng, landslide_lat, -1.770)
-        right_lat_10_m_pixel, right_lng_10_m_pixel = self.newPointFromPointByDistance(landslide_lng, landslide_lat, 1.770)
+        lef_lat_10_m_pixel, lef_lng_10_m_pixel = self.newPointFromPointByDistance(lng, lat, -1.770)
+        right_lat_10_m_pixel, right_lng_10_m_pixel = self.newPointFromPointByDistance(lng, lat, 1.770)
         rectangle_10m_per_pixel = ee.Geometry.Rectangle(lef_lng_10_m_pixel, lef_lat_10_m_pixel, right_lng_10_m_pixel, right_lat_10_m_pixel)
 
         return [rectangle_30m_per_pixel,rectangle_10m_per_pixel]

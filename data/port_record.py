@@ -6,7 +6,10 @@ def readRecordData(input_file):
     portRecords = []
     for index, recordItem in glc_data.iterrows():
         portRecord = SeaPortRecord(lat=recordItem['latitude'], lng=recordItem['longitude'], name=recordItem['name'], country=recordItem['country'], referenceCode=recordItem['country'])
-        portRecord.printOut()
+        # portRecord.printOut()
         portRecords.append(portRecord)
-
     return portRecords
+
+
+def saveDownloadPaths(storage_records, seaport_dataset_path):
+    return None

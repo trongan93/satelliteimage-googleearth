@@ -180,6 +180,6 @@ def downloadNonLandslideImageFilesToLocal(objectid, urls_obj):
 def copy_image_to_dataset(source_file, destination_file):
     shutil.copyfile(source_file, destination_file)
 
-def downloadBestRGBImages(ee, satelliteImages):
-    landsat_9_best_rgb_link = getURLRawImage(satelliteImages)
-    print("donwload link: ", landsat_9_best_rgb_link)
+# def downloadBestRGBImages(ee, satelliteImages):
+#     landsat_9_best_rgb_link = getURLRawImage(satelliteImages)
+#     print("donwload link: ", landsat_9_best_rgb_link)
