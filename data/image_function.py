@@ -66,10 +66,15 @@ def combineRGBBandsNonNormolize(downloaded_paths):
         blue = dataset2.read(1)
 
 
-        # Normalize the bands
-        redn = normalize(red)
-        greenn = normalize(green)
-        bluen = normalize(blue)
+        # # Normalize the bands
+        # redn = normalize(red)
+        # greenn = normalize(green)
+        # bluen = normalize(blue)
+
+        # Non Normalize bands
+        redn = red
+        greenn = green
+        bluen = blue
 
         # Create RGB natural color composite
         rgb = np.dstack((redn, greenn, bluen))

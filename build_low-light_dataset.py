@@ -60,15 +60,16 @@ def main(execute_option, gg_authenticate):
             port_rgb_satellites_images = imageQueries.getSatellitesImageRGB(port_satellites_images)
             port_best_rgb_satellite_image = imageQueries.getBestSatelliteRGBImage(port_rgb_satellites_images)
             url_links_obj, errors_data = img_download.downloadBestRGBImages(port_best_rgb_satellite_image, portRecord._lat, portRecord._lng, port_image_region, str("lng_%f_lat_%f" % (portRecord._lng,portRecord._lat)),error_query)
-            downloaded_paths = img_download.downloadLandslideImageFilesToLocal(str("lng_%f_lat_%f" % (portRecord._lng,portRecord._lat)), url_links_obj)
+            downloaded_paths = img_download.downloadPortImageFilesToLocal(str("lng_%f_lat_%f" % (portRecord._lng,portRecord._lat)), url_links_obj)
             print(downloaded_paths)
             rgb_paths = img_function.combineRGBBandsNonNormolize(downloaded_paths)
             storage_records.append(port_record.getRecordDownloadedPaths(portRecord, rgb_paths))
+
             if errors_data != []:
                 print('object ', str("lng_%f_lat_%f" % (portRecord._lng,portRecord._lat)), ' gets errors')
                 print(errors_data)
-            break
-
+            # break
+        port_record.saveDownloadPaths(storage_records, fconfig.seaport_storage_saved_paths)
 
 
         #     if landslideRecord.size == 'large' or landslideRecord.size == 'very_large' or landslideRecord.size == 'catastrophic':
