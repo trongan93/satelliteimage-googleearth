@@ -55,7 +55,8 @@ def main(execute_option, gg_authenticate):
         for portRecord in portRecords:
         #     query the low-light image of the seaport
             portRecord.printOut()
-            port_image_region = imageQueries.defineImageRegion(portRecord._lng, portRecord._lat)
+            # port_image_region = imageQueries.defineImageRegion(portRecord._lng, portRecord._lat)
+            port_image_region = imageQueries.defineImagePortRegion(portRecord._lng, portRecord._lat)
             port_satellites_images, error_query = imageQueries.getSatellitesImages(lat = portRecord._lat, lng = portRecord._lng, start_date=datetime.datetime.now() - datetime.timedelta(days=365), end_date=datetime.datetime.now())
             port_rgb_satellites_images = imageQueries.getSatellitesImageRGB(port_satellites_images)
             port_best_rgb_satellite_image = imageQueries.getBestSatelliteRGBImage(port_rgb_satellites_images)

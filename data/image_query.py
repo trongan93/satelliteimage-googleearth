@@ -31,6 +31,16 @@ class SatelliteQueryImage:
 
         return [rectangle_30m_per_pixel,rectangle_10m_per_pixel]
 
+    def defineImagePortRegion(self, lng, lat):
+        # 500 pixel on the left, 500 pixel location on the right
+        lef_lat_30_m_pixel, lef_lng_30_m_pixel = self.newPointFromPointByDistance(lng, lat, -21.22)  # phai tinh theo canh huyen cua goc 90 do co kich thuoc giong nhau, sqrt(15^2+15^2)
+        right_lat_30_m_pixel, right_lng_30_m_pixel = self.newPointFromPointByDistance(lng, lat, 21.22)
+        rectangle_30m_per_pixel = ee.Geometry.Rectangle(lef_lng_30_m_pixel, lef_lat_30_m_pixel, right_lng_30_m_pixel, right_lat_30_m_pixel)
+
+        lef_lat_10_m_pixel, lef_lng_10_m_pixel = self.newPointFromPointByDistance(lng, lat, -7.08)
+        right_lat_10_m_pixel, right_lng_10_m_pixel = self.newPointFromPointByDistance(lng, lat, 7.08)
+        rectangle_10m_per_pixel = ee.Geometry.Rectangle(lef_lng_10_m_pixel, lef_lat_10_m_pixel, right_lng_10_m_pixel, right_lat_10_m_pixel)
+        return [rectangle_30m_per_pixel, rectangle_10m_per_pixel]
 
     def newPointFromPointByDistance(self, lng, lat, distance):
         # Ref: https://stackoverflow.com/questions/7222382/get-lat-long-given-current-point-distance-and-bearing
