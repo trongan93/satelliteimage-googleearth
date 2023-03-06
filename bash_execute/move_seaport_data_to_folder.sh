@@ -7,9 +7,11 @@ for f in $(find /mnt/d/Seaport_satellite_images/**/**/rgb.tif);do
   new_f="${f}"
 #  new_ff="$new_f" | tr '/' '_'
   new_ff=${new_f////_}
-  echo $new_ff
+  new_fff=${new_ff//tif/png}
+  echo $new_fff
 
-  cp $f /mnt/d/Seaport_satellite_images/RGB_Only/$new_ff
+  cp $f /mnt/d/Seaport_satellite_images/RGB_Only/$new_fff
+#  break
 done
 
 #find $PWD -name '*.rgb' | xargs echo
